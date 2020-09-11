@@ -21,7 +21,7 @@ void drawBoard()
     printf("\n");
     printf("2 %c   %c   %c\n", board.slots[1][0], board.slots[1][1], board.slots[1][2]);
     printf("\n");
-    printf("3 %c   %c   %c\n", board.slots[2][0], board.slots[2], board.slots[2][2]);
+    printf("3 %c   %c   %c\n", board.slots[2][0], board.slots[2][1], board.slots[2][2]);
 }
 
 char* decode(char* move)
@@ -51,12 +51,17 @@ char* decode(char* move)
 }
 
 // FIX
-bool notEmpty(char* move)
+bool empty(char move[])
 {
     char row = move[0];
     char col = move[1];
-    printf("HERE: %c\n", move[0]);
-    return false;
+    if(board.slots[row][col] != ' ')
+    { 
+        printf("THIS BE IN IT:   %c§\n", board.slots[0][0]);
+        printf("Occupied! Pick another slot\n");
+        return false;
+    }
+    return true;
 }
 
 void placeSlot(const char* move)
@@ -67,14 +72,14 @@ void placeSlot(const char* move)
 void playerTurn()
 {
     char res[2];
-    char move[2];
+    char* move;
     
     printf("Pick a slot: ");
     do {
         scanf("%s", res);
-        char* move = decode(res);
+        move = decode(res);
     }
-    while(notEmpty(move));
+    while(!empty(move));
     
     placeSlot(move);
 }
