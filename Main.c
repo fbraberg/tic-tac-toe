@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct t_Board
@@ -53,20 +54,16 @@ char* decode(char* move)
 // FIX
 bool empty(char move[])
 {
-    char row = move[0];
-    char col = move[1];
-    if(board.slots[row][col] != ' ')
-    { 
-        printf("THIS BE IN IT:   %c§\n", board.slots[0][0]);
-        printf("Occupied! Pick another slot\n");
-        return false;
-    }
-    return true;
+    int row = (int) move[0] - '0';
+    int col = (int) move[1] - '0';
+    return (board.slots[row][col] == ' ');
 }
 
 void placeSlot(const char* move)
 {
-    
+    int row = (int) move[0] - '0';
+    int col = (int) move[1] - '0';
+    board.slots[row][col] = 'O'; 
 }
 
 void playerTurn()
@@ -75,12 +72,16 @@ void playerTurn()
     char* move;
     
     printf("Pick a slot: ");
-    do {
+    scanf("%s", res);
+    move = decode(res);
+
+    while(!empty(move)) 
+    {
+	printf("Occupied! Pick another slot:\n");
         scanf("%s", res);
         move = decode(res);
     }
-    while(!empty(move));
-    
+
     placeSlot(move);
 }
 
@@ -96,13 +97,16 @@ void AI_turn();
 
 void loop()
 {
-    drawBoard();
-    playerTurn();
-    drawBoard();
-    //calcWinner();
-    //AI turn
-    //Draw board
-    //Clac winner
+    while(1) 
+    {
+	drawBoard();
+	playerTurn();
+	drawBoard();
+	//calcWinner();
+	//AI turn
+	//Draw board
+	//Clac winner
+    }
 }
 
 
