@@ -8,7 +8,7 @@ typedef struct t_Board
 {
     
     char slots[3][3];
-
+    
 } Board, *PBoard;
 Board board;
 
