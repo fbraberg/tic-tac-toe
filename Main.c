@@ -6,15 +6,23 @@
 
 typedef struct t_Board
 {
+    
+    char slots[3][3];
 
-    char slots[3][3] = {{' ', ' ', ' '},
-	{' ', ' ', ' '},
-	{' ', ' ', ' '}};
-
-} Board;
+} Board, *PBoard;
 Board board;
 
-void clear_Screen() 
+void init_board() 
+{
+    for(int row = 0; row < 3; row++) {
+        for(int col = 0; col < 3; col++) {
+            board.slots[row][col] = ' ';
+        }
+    }
+}
+
+
+void clear_screen()
 {
     for(int i = 0; i < 100; i ++) 
     {
@@ -22,9 +30,9 @@ void clear_Screen()
     }
 }
 
-void draw_Board()
+void draw_board()
 {
-    clear_Screen();
+    clear_screen();
     printf("  A   B   C\n");
     printf("1 %c   %c   %c\n", board.slots[0][0], board.slots[0][1], board.slots[0][2]);
     printf("\n");
@@ -59,31 +67,32 @@ char* decode(char* move)
 
 }
 
-bool empty(char move[])
+int empty_1(char move[])
 {
     int row = (int) move[0] - '0';
     int col = (int) move[1] - '0';
+    printf("This: %c",(board.slots[row][col]));
     return (board.slots[row][col] == ' ');
 }
 
-bool empty(const int row, const int col)
+int empty_2(const int row, const int col)
 {
     return (board.slots[row][col] == ' ');
 }
 
-void place_Slot(const char* move, char symbol)
+void place_slot_1(const char* move, char symbol)
 {
     int row = (int) move[0] - '0';
     int col = (int) move[1] - '0';
     board.slots[row][col] = symbol;
 }
 
-void place_Slot(const int row, const int col, char symbol)
+void place_slot_2(const int row, const int col, char symbol)
 {
     board.slots[row][col] = symbol;
 }
 
-void player_Turn()
+void player_turn()
 {
     char res[2];
     char* move;
@@ -92,31 +101,31 @@ void player_Turn()
     scanf("%s", res);
     move = decode(res);
 
-    while(!empty(move)) 
+    while(!empty_1(move)) 
     {
 	printf("Occupied! Pick another slot:\n");
 	scanf("%s", res);
 	move = decode(res);
     }
 
-    place_Slot(move, 'O');
+    place_slot_1(move, 'O');
 }
 
-void player_Wins()
+void player_wins()
 {
-    clear_Screen();
+    clear_screen();
     printf("You win!");
     exit(0);
 }
 
-void AI_Wins() 
+void AI_wins() 
 {
-    clear_Screen();
+    clear_screen();
     printf("The AI wins");
     exit(0);
 }
 
-void calc_Winner() 
+void calc_winner() 
 {
     // Check every row
     for(int row = 0; row < 3; row++)
@@ -125,9 +134,9 @@ void calc_Winner()
             board.slots[row][1] == board.slots[row][2]) 
         {
             if(board.slots[row][2] == 'O')
-                player_Wins();
+                player_wins();
             else if(board.slots[row][2] == 'X')
-                AI_Wins();
+                AI_wins();
         }
     }
     
@@ -138,9 +147,9 @@ void calc_Winner()
             board.slots[1][col] == board.slots[2][col])
         { 
             if(board.slots[2][col] == 'O')
-                player_Wins();
+                player_wins();
             else if(board.slots[2][col] == 'X') 
-                AI_Wins();    
+                AI_wins();    
         }
     }
     
@@ -149,9 +158,9 @@ void calc_Winner()
        board.slots[1][1] == board.slots[2][2])
     {
         if(board.slots[2][2] == 'O')
-            player_Wins();
+            player_wins();
         else if(board.slots[2][2] == 'X') 
-            AI_Wins();
+            AI_wins();
     }
     
     // Check the second diagonal
@@ -159,9 +168,9 @@ void calc_Winner()
        board.slots[1][1] == board.slots[2][0])
     {
         if(board.slots[2][0] == 'O')
-            player_Wins();
+            player_wins();
         else if(board.slots[2][0] == 'X') 
-            AI_Wins();
+            AI_wins();
     }
 }
 
@@ -173,12 +182,12 @@ void AI_turn()
     int row = rand()%3;
     int col = rand()%3;
 
-    while(!empty(row, col)) 
+    while(!empty_2(row, col)) 
     {
 	row = rand()%3;
 	col = rand()%3;
     }
-    place_Slot(row, col, 'X');
+    place_slot_2(row, col, 'X');
 }
 
 
@@ -187,13 +196,13 @@ void loop()
 {
     while(1) 
     {
-	draw_Board();
-	player_Turn();
-    draw_Board();
-	calc_Winner();
-	AI_turn();
-	draw_Board();
-	calc_Winner();
+        draw_board();
+        player_turn();
+        draw_board();
+        calc_winner();
+        AI_turn();
+        draw_board();
+        calc_winner();
     }
 }
 
@@ -201,9 +210,8 @@ void loop()
 
 int main()
 {
+    init_board();
     loop();
-
-
     return 0;
 }
 
