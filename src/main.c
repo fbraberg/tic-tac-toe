@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include <conio.h>
+#include "board.h"
 
 typedef struct t_Board
 {
