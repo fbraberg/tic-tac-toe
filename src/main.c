@@ -11,13 +11,14 @@
 
 
 
-
+// Clears the screen
 void clear_screen()
 {
-    for(int i = 0; i < CONSOLE_CLEAR ; i ++) 
+    for(int i = 0; i < CONSOLE_CLEAR ; i++) 
         printf("\n");
 }
 
+// Draws the board on screen
 void draw_board(PBoard board)
 {
     clear_screen();
@@ -55,6 +56,8 @@ char* decode(char* move)
 
 }
 
+// Checks if move is possible based on move
+// Returns: 1 if move possible, 0 if not possible
 int empty_1(PBoard board, char move[])
 {
     int row = (int) move[0] - '0';
@@ -62,11 +65,14 @@ int empty_1(PBoard board, char move[])
     return (board->slots[row][col] == ' ');
 }
 
+// Checks if move is possible based on two coordinates
+// Returns: 1 if move possible, 0 if not possible
 int empty_2(PBoard board, const int row, const int col)
 {
     return (board->slots[row][col] == ' ');
 }
 
+// Places symbol in slot based on a move
 void place_slot_1(PBoard board, const char* move, char symbol)
 {
     int row = (int) move[0] - '0';
@@ -74,11 +80,13 @@ void place_slot_1(PBoard board, const char* move, char symbol)
     board->slots[row][col] = symbol;
 }
 
+// Places symbol in slot based on two coordinates
 void place_slot_2(PBoard board,const int row, const int col, char symbol)
 {
     board->slots[row][col] = symbol;
 }
 
+// Player makes a choice and tries to make the move
 void player_turn(PBoard board)
 {
     char res[2];
@@ -98,6 +106,7 @@ void player_turn(PBoard board)
     place_slot_1(board, move, 'O');
 }
 
+// Player has won
 void player_wins()
 {
     clear_screen();
@@ -105,6 +114,7 @@ void player_wins()
     exit(0);
 }
 
+// AI has won
 void AI_wins() 
 {
     clear_screen();
@@ -112,6 +122,7 @@ void AI_wins()
     exit(0);
 }
 
+// Search entire board and check if there's a winner
 void calc_winner(PBoard board) 
 {
     // Check every row
@@ -162,7 +173,7 @@ void calc_winner(PBoard board)
 }
 
 
-
+// The AI makes its move
 void AI_turn(PBoard board) 
 {
     srand(time(0));
@@ -178,7 +189,7 @@ void AI_turn(PBoard board)
 }
 
 
-
+// Main game loop
 void loop(PBoard board)
 {
     while(1) 
