@@ -5,6 +5,7 @@
 #include <conio.h>
 #include "../headers/board.h"
 #include "board.c"
+#include "../headers/general.h"
 
 
 
@@ -13,10 +14,8 @@
 
 void clear_screen()
 {
-    for(int i = 0; i < 100; i ++) 
-    {
-	printf("\n");
-    }
+    for(int i = 0; i < CONSOLE_CLEAR ; i ++) 
+        printf("\n");
 }
 
 void draw_board(PBoard board)
