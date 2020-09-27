@@ -1,8 +1,16 @@
 #include "../headers/board.h"
 
+static void t_update_board(PBoard board) {
+    // This is where the magic happens
+}
 
 void init_board(PBoard board)
 {
+    board->player_can_finish = 0;
+    board->ai_can_finish = 0;
+    board->ai_can_finish_next_turn = 0;
+    board->update_board = t_update_board;
+
     for(int row = 0; row < BOARD_HEIGHT; row++) {
         for(int col = 0; col < BOARD_WIDTH; col++) {
             board->slots[row][col] = ' ';
