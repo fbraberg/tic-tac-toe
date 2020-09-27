@@ -84,16 +84,66 @@ void player_wins()
 // The AI makes its move
 void AI_turn(PBoard board) 
 {
-    srand(time(0));
-    int row = rand()%3;
-    int col = rand()%3;
-
+    int row;
+    int col;
+    
+    // ===============================================================
+    // Check every row
+    for(int row = 0; row < 3; row++)
+    {
+        if(board->slots[row][0] == board->slots[row][1] &&
+            board->slots[row][1] == board->slots[row][2]) 
+        {
+            if(board->slots[row][2] == PLAYER_SYMBOL)
+                player_wins();
+            else if(board->slots[row][2] == AI_SYMBOL)
+                AI_wins();
+        }
+    }
+    
+    // Check every column
+    for(int col = 0; col < 3; col++)
+    {
+        if(board->slots[0][col] == board->slots[1][col] &&
+            board->slots[1][col] == board->slots[2][col])
+        { 
+            if(board->slots[2][col] == PLAYER_SYMBOL)
+                player_wins();
+            else if(board->slots[2][col] == AI_SYMBOL) 
+                AI_wins();    
+        }
+    }
+    
+    // Check the first diagonal
+    if(board->slots[0][0] == board->slots[1][1] &&
+       board->slots[1][1] == board->slots[2][2])
+    {
+        if(board->slots[2][2] == PLAYER_SYMBOL)
+            player_wins();
+        else if(board->slots[2][2] == AI_SYMBOL) 
+            AI_wins();
+    }
+    
+    // Check the second diagonal
+    if(board->slots[0][2] == board->slots[1][1] &&
+       board->slots[1][1] == board->slots[2][0])
+    {
+        if(board->slots[2][0] == PLAYER_SYMBOL)
+            player_wins();
+        else if(board->slots[2][0] == AI_SYMBOL) 
+            AI_wins();
+    }
+    // ===============================================================
+    
+    
+    
     while(!empty_2(board, row, col)) 
     {
 	row = rand()%3;
 	col = rand()%3;
     }
     place_slot_2(board, row, col, AI_SYMBOL);
+    
 }
 
 // AI has won
