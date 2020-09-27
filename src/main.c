@@ -4,11 +4,7 @@
 #include <time.h>
 #include <conio.h>
 #include "../headers/board.h"
-#include "board.c"
 #include "../headers/general.h"
-
-
-
 
 
 // Clears the screen
@@ -56,35 +52,6 @@ char* decode(char* move)
 
 }
 
-// Checks if move is possible based on move
-// Returns: 1 if move possible, 0 if not possible
-int empty_1(PBoard board, char move[])
-{
-    int row = (int) move[0] - '0';
-    int col = (int) move[1] - '0';
-    return (board->slots[row][col] == ' ');
-}
-
-// Checks if move is possible based on two coordinates
-// Returns: 1 if move possible, 0 if not possible
-int empty_2(PBoard board, const int row, const int col)
-{
-    return (board->slots[row][col] == ' ');
-}
-
-// Places symbol in slot based on a move
-void place_slot_1(PBoard board, const char* move, char symbol)
-{
-    int row = (int) move[0] - '0';
-    int col = (int) move[1] - '0';
-    board->slots[row][col] = symbol;
-}
-
-// Places symbol in slot based on two coordinates
-void place_slot_2(PBoard board,const int row, const int col, char symbol)
-{
-    board->slots[row][col] = symbol;
-}
 
 // Player makes a choice and tries to make the move
 void player_turn(PBoard board)
@@ -112,6 +79,21 @@ void player_wins()
     clear_screen();
     printf("You win!");
     exit(0);
+}
+
+// The AI makes its move
+void AI_turn(PBoard board) 
+{
+    srand(time(0));
+    int row = rand()%3;
+    int col = rand()%3;
+
+    while(!empty_2(board, row, col)) 
+    {
+	row = rand()%3;
+	col = rand()%3;
+    }
+    place_slot_2(board, row, col, 'X');
 }
 
 // AI has won
@@ -171,23 +153,6 @@ void calc_winner(PBoard board)
             AI_wins();
     }
 }
-
-
-// The AI makes its move
-void AI_turn(PBoard board) 
-{
-    srand(time(0));
-    int row = rand()%3;
-    int col = rand()%3;
-
-    while(!empty_2(board, row, col)) 
-    {
-	row = rand()%3;
-	col = rand()%3;
-    }
-    place_slot_2(board, row, col, 'X');
-}
-
 
 // Main game loop
 void loop(PBoard board)
