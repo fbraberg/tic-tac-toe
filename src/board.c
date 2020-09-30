@@ -43,7 +43,7 @@ void place_slot_1(PBoard board, const char* move, char symbol)
 }
 
 // Places symbol in slot based on two coordinates
-void place_slot_2(PBoard board,const int row, const int col, char symbol)
+void place_slot_2(PBoard board, const int row, const int col, char symbol)
 {
     board->slots[row][col] = symbol;
 }

@@ -5,6 +5,7 @@
 #include <conio.h>
 #include "../headers/board.h"
 #include "../headers/general.h"
+#include "../headers/ai.h"
 
 
 // Clears the screen
@@ -81,10 +82,6 @@ void player_wins()
     exit(0);
 }
 
-
-
-// ==================================/AI functions\==================================
-
 // AI has won
 void ai_wins()
 {
@@ -92,76 +89,6 @@ void ai_wins()
     printf("The AI wins");
     exit(0);
 }
-
-int ai_can_win_this_turn()
-{
-
-}
-
-void ai_finish_game()
-{
-
-
-}
-
-int player_can_win_next_turn()
-{
-
-
-}
-
-void ai_block_player()
-{
-
-
-}
-
-int ai_can_win_in_two_turns()
-{
-
-}
-
-void ai_play_accordingly()
-{
-
-}
-
-void ai_play_on_mood()
-{
-
-}
-
-// The AI makes its move
-void AI_turn(PBoard board)
-{
-    int row;
-    int col;
-
-    // =======================To be improved================================
-
-    if( ai_can_win_this_turn() )
-        ai_finish_game();
-    else if( player_can_win_next_turn() )
-        ai_block_player();
-    else if( ai_can_win_in_two_turns() )
-        ai_play_accordingly();
-    else
-        ai_play_on_mood();
-
-    // ========================================================================
-
-
-
-    while(!empty_2(board, row, col))
-    {
-	row = rand()%3;
-	col = rand()%3;
-    }
-    place_slot_2(board, row, col, AI_SYMBOL);
-
-}
-
-// ==================================\AI functions/==================================
 
 // Search entire board and check if there's a winner
 void calc_winner(PBoard board)
@@ -214,7 +141,7 @@ void calc_winner(PBoard board)
 }
 
 // Main game loop
-void loop(PBoard board)
+void loop(PBoard board, PAI ai)
 {
     while(1)
     {
@@ -222,7 +149,7 @@ void loop(PBoard board)
         player_turn(board);
         draw_board(board);
         calc_winner(board);
-        AI_turn(board);
+        ai_play(board, ai);
         draw_board(board);
         calc_winner(board);
     }
@@ -233,7 +160,8 @@ void loop(PBoard board)
 int main()
 {
     Board board;
+    AI ai;
     init_board(&board);
-    loop(&board);
+    loop(&board, &ai);
     return 0;
 }
